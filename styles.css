@@ -1,0 +1,24 @@
+#control_panel {
+    background-color: darkgray;
+    display: grid;
+    float: inline-start;
+    height: 300px;
+    width: 200px;
+
+    grid-column: 1fr 1fr;
+    grid-row: 1fr 1fr ;
+}
+
+#content {
+    
+    width: min-content;
+}
+
+input {
+    width: 100px;
+    height: 25px;
+}
+
+label {
+    height: 25px;
+}

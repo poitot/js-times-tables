@@ -1,0 +1,144 @@
+
+<script src="https://d3js.org/d3.v5.js"></script>
+<link rel="stylesheet" href="./styles.css"></link>
+
+<body>
+    <div id="control_panel">
+        <label for="mult">multiplication:</label>
+        <input id="mult">
+
+        <label for="steps">steps:</label>
+        <input id="steps">
+
+        <label for="depth">depth:</label>
+        <input id="depth">
+
+        <label for="radius">radius:</label>
+        <input id="radius">
+
+        <button onclick="update()" id="btn">Update</button>
+    </div>
+    <canvas width="700px" height="700px" id="myCanvas"></canvas>
+
+</body>
+
+<script>
+    //constants used for configuration settings
+    const circle_x = 300;
+    const circle_y = 300;
+    const radius = 200;
+    const steps = 10;
+
+    const mul = 2;
+    const depth = 100;
+
+    function init() {
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(circle_x, circle_y, radius, 0, 2 * Math.PI);
+        ctx.stroke(); 
+
+        document.getElementById("mult").value = mul;
+        document.getElementById("steps").value = steps;
+        document.getElementById("depth").value = depth;
+        document.getElementById("radius").value = radius;
+    }
+
+    function update() {
+        // clear canvas for re-drawing
+        var c = document.getElementById("myCanvas");
+        var ctx = c.getContext("2d");
+        ctx.clearRect(0, 0, 700, 700);
+
+
+        // get input values
+        var m = document.getElementById("mult").value;
+        var s = document.getElementById("steps").value;
+        var d = document.getElementById("depth").value;
+        var r = document.getElementById("radius").value;
+
+        ctx.beginPath();
+        ctx.arc(circle_x, circle_y, r, 0, 2 * Math.PI);
+        ctx.stroke();
+        
+        var res = times_table(m, d);
+        var vals = circle(circle_x, circle_y, r, s);
+
+        draw_lines(vals[0], vals[1], res, s);
+        make_labels(vals[0], vals[1], r, s);
+
+    }
+
+    function circle(centerX, centerY, radius_, steps_){
+    var xValues = [];
+    var yValues = [];
+
+    for (var i = 0; i < steps_; i++) {
+        xValues[i] = (centerX + radius_ * Math.cos(2 * Math.PI * i / steps_-Math.PI/2));
+        yValues[i] = (centerY + radius_ * Math.sin(2 * Math.PI * i / steps_-Math.PI/2));
+   }
+   console.log(xValues);
+   console.log(yValues);
+   
+   return [xValues, yValues];
+}
+
+function draw_lines(xVals, yVals, res, steps_) {
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+
+    for (var i = 0; i < steps_; i++) {
+        var point = res[i] % 10;
+
+        ctx.moveTo(xVals[i], yVals[i]);
+        ctx.lineTo(xVals[point], yVals[point]);
+        ctx.stroke();
+    }
+
+    
+}
+
+var res = times_table(mul, depth);
+var vals = circle(circle_x, circle_y, radius, steps);
+draw_lines(vals[0], vals[1], res, steps);
+make_labels(vals[0], vals[1], radius, steps);
+
+function times_table(mul_, depth_) {
+        var results = [];
+        for (var i = 0; i < depth_; i++) {
+            results[i] = mul_ * i;
+        }
+        console.log(results);
+        return results;
+    }
+
+function make_labels(xVals, yVals, radius_, steps_) {
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    //for (var i = 0; i < xVals.length; i++) {
+       // ctx.moveTo(xVals[i], yVals[i]);
+       // ctx.fillText(i, xVals[i], yVals[i]);
+    //}
+
+    ctx.font = radius_*0.2 + "px arial";
+ 
+        ctx.textBaseline="middle";
+        ctx.textAlign="center";
+
+        var num;
+        var ang;
+        for(num = 0; num < steps_; num++){
+            ang = num * Math.PI / (steps_ / 2);
+            ctx.moveTo(circle_x, circle_y);
+            ctx.rotate(ang);
+            ctx.translate(0, -radius_ * 1.2);
+            ctx.rotate(-ang);
+            ctx.fillText(num.toString(), circle_x, circle_y);
+            ctx.rotate(ang);
+            ctx.translate(0, radius_ * 1.2);
+            ctx.rotate(-ang);
+        }   
+    }
+    document.addEventListener('DOMContentLoaded', init)
+</script>
