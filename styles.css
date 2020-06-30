@@ -4,14 +4,13 @@
     float: inline-start;
     height: 300px;
     width: 200px;
-
-    grid-column: 1fr 1fr;
-    grid-row: 1fr 1fr ;
+    position: absolute;
 }
 
 #content {
     
     width: min-content;
+    margin-left: 15%;
 }
 
 input {

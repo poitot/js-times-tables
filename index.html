@@ -6,23 +6,20 @@
     <div id="control_panel">
         <label for="mult">multiplication:</label>
         <input id="mult">
+        <input onchange="update()" type="range" min="1" max="100" value="2" class="slider" id="mult_slider">
 
         <label for="steps">steps:</label>
         <input id="steps">
         <input onchange="update()" type="range" min="0" max="100" value="10" class="slider" id="step_slider">
-
-        <label for="depth">depth:</label>
-        <input id="depth">
-
-        <label for="radius">radius:</label>
-        <input id="radius">
 
         <label for="chk_outline" >Outine:</label>
         <input type="checkbox" id="chk_outline" checked>
 
         <button onclick="update()" id="btn">Update</button>
     </div>
+    <div id="content">
     <canvas width="700px" height="700px" id="myCanvas"></canvas>
+</div>
 
 </body>
 
@@ -59,8 +56,6 @@
 
         document.getElementById("mult").value = mul;
         document.getElementById("steps").value = steps;
-        document.getElementById("depth").value = depth;
-        document.getElementById("radius").value = radius;
     }
 
     // updates the drawing with input from text boxes
@@ -74,16 +69,14 @@
         // get input values
         var m = document.getElementById("mult").value;
         var s = document.getElementById("steps").value;
-        var d = document.getElementById("depth").value;
-        var r = document.getElementById("radius").value;
 
         outline(ctx);
 
-        var res = times_table(m, d);
-        var vals = circle(circle_x, circle_y, r, s);
+        var res = times_table(m, depth);
+        var vals = circle(circle_x, circle_y, radius, s);
 
         draw_lines(vals[0], vals[1], res, s);
-        make_labels(vals[0], vals[1], r, s);
+        make_labels(vals[0], vals[1], radius, s);
 
     }
 
@@ -174,10 +167,18 @@
         }
 
     // event listener for change of step slider, updates step text box along with the canvas
-    var slider = document.getElementById("step_slider");
-    var text = document.getElementById("steps")
-    slider.addEventListener('change', function () {
-        text.value = slider.value;
+    var step_slider = document.getElementById("step_slider");
+    var step_text = document.getElementById("steps")
+    step_slider.addEventListener('change', function () {
+        step_text.value = step_slider.value;
+        update();
+    })
+
+    // event listener for change of multiplication slider, updates mult text box along with the canvas
+    var mult_slider = document.getElementById("mult_slider");
+    var mult_text = document.getElementById("mult")
+    mult_slider.addEventListener('change', function () {
+        mult_text.value = mult_slider.value;
         update();
     })
 
