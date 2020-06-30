@@ -9,6 +9,7 @@
 
         <label for="steps">steps:</label>
         <input id="steps">
+        <input onchange="update()" type="range" min="0" max="100" value="10" class="slider" id="step_slider">
 
         <label for="depth">depth:</label>
         <input id="depth">
@@ -23,7 +24,7 @@
 </body>
 
 <script>
-    //constants used for configuration settings
+    //constants used for initial configuration
     const circle_x = 300;
     const circle_y = 300;
     const radius = 200;
@@ -32,6 +33,7 @@
     const mul = 2;
     const depth = 100;
 
+    // inits base circle and assigns values to text boxes
     function init() {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
@@ -45,6 +47,7 @@
         document.getElementById("radius").value = radius;
     }
 
+    // updates the drawing with input from text boxes
     function update() {
         // clear canvas for re-drawing
         var c = document.getElementById("myCanvas");
@@ -61,7 +64,7 @@
         ctx.beginPath();
         ctx.arc(circle_x, circle_y, r, 0, 2 * Math.PI);
         ctx.stroke();
-        
+
         var res = times_table(m, d);
         var vals = circle(circle_x, circle_y, r, s);
 
@@ -69,6 +72,7 @@
         make_labels(vals[0], vals[1], r, s);
 
     }
+
 
     function circle(centerX, centerY, radius_, steps_){
     var xValues = [];
@@ -89,8 +93,17 @@ function draw_lines(xVals, yVals, res, steps_) {
     var ctx = c.getContext("2d");
 
     for (var i = 0; i < steps_; i++) {
-        var point = res[i] % 10;
+        var point;
+        
+        point = res[i] % steps_;
+        
+        if (res[i] === steps_) {
+            point = 0;
+        }
 
+
+
+        console.log("i:", i, "res[i]:", res[i], "point:", point);
         ctx.moveTo(xVals[i], yVals[i]);
         ctx.lineTo(xVals[point], yVals[point]);
         ctx.stroke();
@@ -140,5 +153,7 @@ function make_labels(xVals, yVals, radius_, steps_) {
             ctx.rotate(-ang);
         }   
     }
+
+
     document.addEventListener('DOMContentLoaded', init)
 </script>
