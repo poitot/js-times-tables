@@ -7,15 +7,25 @@
     position: absolute;
 }
 
+#control_panel:first-child {
+    padding-top: 5px;
+}
+
 #content {
     
     width: min-content;
     margin-left: 15%;
 }
 
+label, input {
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+}
+
 input {
-    width: 100px;
-    height: 25px;
+    width: auto;
+    height: 20px;
 }
 
 label {

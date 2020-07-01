@@ -12,10 +12,10 @@
         <input id="steps">
         <input onchange="update()" type="range" min="0" max="100" value="10" class="slider" id="step_slider">
 
-        <label for="chk_outline" >Outine:</label>
-        <input type="checkbox" id="chk_outline" checked>
 
-        <button onclick="update()" id="btn">Update</button>
+            <label for="chk_outline" >Outine:</label>
+            <input type="checkbox" id="chk_outline" checked>
+
     </div>
     <div id="content">
     <canvas width="700px" height="700px" id="myCanvas"></canvas>
@@ -56,6 +56,9 @@
 
         document.getElementById("mult").value = mul;
         document.getElementById("steps").value = steps;
+
+        document.getElementById("mult_slider").value = mul;
+        document.getElementById("step_slider").value = steps;
     }
 
     // updates the drawing with input from text boxes
@@ -76,7 +79,7 @@
         var vals = circle(circle_x, circle_y, radius, s);
 
         draw_lines(vals[0], vals[1], res, s);
-        make_labels(vals[0], vals[1], radius, s);
+        draw_labels(vals[0], vals[1], radius, s);
 
     }
 
@@ -125,7 +128,7 @@
     var res = times_table(mul, depth);
     var vals = circle(circle_x, circle_y, radius, steps);
     draw_lines(vals[0], vals[1], res, steps);
-    make_labels(vals[0], vals[1], radius, steps);
+    draw_labels(vals[0], vals[1], radius, steps);
 
     // calculates times table to the required depth
     function times_table(mul_, depth_) {
@@ -137,8 +140,8 @@
             return results;
         }
 
-    // prints labels around the outline circle for the n of steps
-    function make_labels(xVals, yVals, radius_, steps_) {
+    // draws labels around the outline circle for the n of steps
+    function draw_labels(xVals, yVals, radius_, steps_) {
         var c = document.getElementById("myCanvas");
         var ctx = c.getContext("2d");
         //for (var i = 0; i < xVals.length; i++) {
@@ -146,7 +149,7 @@
         // ctx.fillText(i, xVals[i], yVals[i]);
         //}
 
-        ctx.font = radius_*0.2 + "px arial";
+        ctx.font = "10px arial";
     
             ctx.textBaseline="middle";
             ctx.textAlign="center";
@@ -174,11 +177,27 @@
         update();
     })
 
+    step_text.addEventListener('change', function () {
+        step_slider.value = step_text.value;
+        update();
+    })
+
     // event listener for change of multiplication slider, updates mult text box along with the canvas
     var mult_slider = document.getElementById("mult_slider");
     var mult_text = document.getElementById("mult")
     mult_slider.addEventListener('change', function () {
         mult_text.value = mult_slider.value;
+        update();
+    })
+
+    mult_text.addEventListener('change', function () {
+        mult_slider.value = mult_text.value;
+        update();
+    })
+
+    // event listener for change of outline checkbox
+    var check_box = document.getElementById("chk_outline");
+    check_box.addEventListener('change', function () {
         update();
     })
 
